@@ -322,6 +322,15 @@
 
             this.hullAlgorithm = algorithm.method;
 
+        },
+        
+        /**
+         * @method setPopupHTML
+         * @param popupHTML {String}
+         * @return {void}
+         */
+        setPopupHTML: function setPopupHTML(popupHTML) {
+            this.popupHTML = popupHTML;
         }
 
     };

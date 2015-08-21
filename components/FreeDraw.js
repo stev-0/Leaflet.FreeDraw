@@ -483,6 +483,7 @@
                 removeClass(map, 'mode-delete');
                 removeClass(map, 'mode-view');
                 removeClass(map, 'mode-append');
+                removeClass(map, 'mode-edit-data');
 
                 if (mode & modes.CREATE) {
                     addClass(map, 'mode-create');
@@ -502,6 +503,10 @@
 
                 if (mode & modes.APPEND) {
                     addClass(map, 'mode-append');
+                }
+                
+                if (mode & modes.EDIT_DATA) {
+                    addClass(map, 'mode-edit-data');
                 }
 
             }(L.FreeDraw.MODES, this.map._container, L.DomUtil.addClass, L.DomUtil.removeClass));
@@ -694,6 +699,12 @@
                 this.createEdges(polygon);
 
             }.bind(this);
+            
+            // assume anything when edit data is turned on is to do that
+            if (this.mode & L.FreeDraw.MODES.EDIT_DATA) {
+                this.map.openPopup( this.options.popupHTML, this.map.containerPointToLatLng(newPoint));
+                return;
+            }
 
             // If the user hasn't enabled delete mode but has the append mode active, then we'll
             // assume they're always wanting to add an edge.
@@ -1589,7 +1600,8 @@
         DELETE: 8,
         APPEND: 16,
         EDIT_APPEND: 4 | 16,
-        ALL: 1 | 2 | 4 | 8 | 16
+        EDIT_DATA: 32,
+        ALL: 1 | 2 | 4 | 8 | 16 | 32
     };
 
     /**
