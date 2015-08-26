@@ -1648,5 +1648,6 @@
         // ..And then output the thrown exception.
         throw "Leaflet.FreeDraw: " + message + ".";
 
-    };
--})(window, window.L, window.d3, window.ClipperLib);
+};
+
+})(window, window.L, window.d3, window.ClipperLib);
