@@ -699,10 +699,13 @@
                 this.createEdges(polygon);
 
             }.bind(this);
-            
+
             // assume anything when edit data is turned on is to do that
             if (this.mode & L.FreeDraw.MODES.EDIT_DATA) {
-                this.map.openPopup( this.options.popupHTML, this.map.containerPointToLatLng(newPoint));
+                this.fire("polygonDataEditClick", {
+                    clickLocation: this.map.containerPointToLatLng(newPoint),
+                    polygon: polygon
+                });
                 return;
             }
 
@@ -902,6 +905,17 @@
             // ...And we can finally notify everybody of our new boundaries!
             this.notifyBoundaries();
 
+        },
+
+        /**
+         * @method addPopup
+         * @param popupHTML {String}
+         * @param point {}
+         * @param leafletID {Number}
+         * @return void
+         */
+        addPopup: function addPopup(popupHTML, point, leafletId){
+            this.map.openPopup(popupHTML, point, {id:leafletId})
         },
 
         /**
@@ -1568,6 +1582,9 @@
 
             // Physically draw the Leaflet generated polygon.
             var polygon = this.createPolygon(latLngs || this.latLngs);
+            this.fire("polygonAdded", {
+                'polygon':polygon}
+                );
 
             if (!polygon) {
                 this.setMapPermissions('enable');
@@ -1580,9 +1597,9 @@
 
                 // Automatically exit the user from the creation mode.
                 this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
-                
+   //             this.setMapPermissions('enable');
+
             }
-            // moved outside condition to try to fix locked zoom after poly creation
             this.setMapPermissions('enable');
 
         }
@@ -1632,5 +1649,4 @@
         throw "Leaflet.FreeDraw: " + message + ".";
 
     };
-
-})(window, window.L, window.d3, window.ClipperLib);
+})
