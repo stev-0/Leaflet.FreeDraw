@@ -1649,4 +1649,4 @@
         throw "Leaflet.FreeDraw: " + message + ".";
 
     };
-})
+-})(window, window.L, window.d3, window.ClipperLib);
